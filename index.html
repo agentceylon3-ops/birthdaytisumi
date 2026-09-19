@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Thisumi Birthday</title>
+    
+    <!-- EmailJS SDK එක නිවැරදිව මෙතන තියෙනවා -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: rgb(139, 3, 3); 
+            --bg-color: #ffecec;
+            --text-color: #333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            overflow: hidden; 
+            color: var(--text-color);
+        }
+
+        
+        #invitation-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            perspective: 1500px;
+            
+         
+        }
+        .opened .corner-img {
+        display: none !important;
+        
+    }
+
+        .door-wrapper {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            display: flex;
+            transition: visibility 0s 1.5s;
+            overflow: hidden; 
+          
+        }
+        
+
+        .door {
+            width: 50%;
+            height: 100%;
+            background-color:rgb(139, 3, 3);
+            background-image: url('https://www.transparenttextures.com/patterns/mandala-ornament.png'); 
+            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.3);
+              
+        }
+
+        .left-door { transform-origin: left; border-right: 1px solid rgba(255,255,255,0.1); }
+        .right-door { transform-origin: right; border-left: 1px solid rgba(255,255,255,0.1); }
+
+        .opened .left-door { transform: rotateY(-100deg); }
+        .opened .right-door { transform: rotateY(100deg); }
+        .opened .door-wrapper { visibility: hidden; }
+
+        /* මේ තියෙන්නේ ඔයාගේ පරණ code එකේ තිබ්බ තැන */
+.left-door { 
+    transform-origin: left; 
+    border-right: 2px solid rgb(239, 247, 196); /* මෙතන 0.1 තිබ්බ එක 1 කරාම තද සුදු වෙනවා */
+}
+
+.right-door { 
+    transform-origin: right; 
+    border-left: 2px solid rgb(239, 247, 196); /* මෙතනත් 1 කරලා line එකේ මහත 2px කරා */
+}
+
+        /* Seal / Open Button */
+        .seal {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px; height: 100px;
+            background: #fff;
+            border-radius: 50%;
+            border: 2px solid rgb(209, 12, 12) ;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 101;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: 0.5s;
+        }
+
+        .seal span { font-weight: bold; color: var(--primary-color); font-size: 14px; }
+        .opened .seal { opacity: 0; pointer-events: none; }
+
+        /* --- Main Content --- */
+        .main-content {
+            padding: 20px;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 1s ease 0.8s;
+        }
+
+        .opened .main-content { opacity: 1; transform: translateY(0); }
+
+        
+        
+        .section { margin-bottom: 50px; padding: 20px; }
+
+        
+        /* Form Style */
+        .rsvp-form input, .rsvp-form select {
+            width: 100%; padding: 12px; margin: 10px 0;
+            border: 1px solid #ddd; border-radius: 8px;
+        }
+        .btn-submit {
+            background: var(--primary-color); color: #fff;
+            padding: 12px 30px; border: none; border-radius: 25px;
+            cursor: pointer; font-size: 16px;
+        }
+
+        audio { display: none; }
+
+        .section1 { padding: 40px 20px; width: 100%; }
+        
+        .map-container {
+            width: 100%;
+            height: 300px;
+            margin: 20px 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 30% 30% 0 0;
+        }
+
+        iframe { width: 100%; height: 100%; border: 0; }
+
+        
+        /* load animation style */
+        .scroll-animation {
+            opacity: 0; 
+            transform: translateY(50px); 
+            transition: all 0.6s ease-out; 
+        }
+
+        .scroll-animation.active {
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+
+     /*text vertical*/
+    /* Desktop සහ Tablet සඳහා (සාමාන්‍ය විදිහ) */
+.vertical-names {
+    position: fixed;
+    font-family: "Roboto Condensed", sans-serif;
+    left: 12px !important;
+    top: 50%;
+    transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    letter-spacing: 5px !important;
+    color: #ffffff ;
+    z-index: 1000;
+    font-size: 20px !important;
+    writing-mode: vertical-rl;
+    transform: translateY(-50%) rotate(180deg); 
+    text-align: center;
+}
+
+/* Mobile Screens (පළල 768px ට වඩා අඩු phone සඳහා) */
+@media (max-width: 768px) {
+    .vertical-names {
+        left: 5px;          /* වම් පැත්තට තවත් ලං කරනවා */
+        font-size: 14px;    /* අකුරු පොඩි කරනවා */
+        letter-spacing: 1px;
+        opacity: 0.6;       /* Content එක පේන්න ඕන නිසා ටිකක් ලා කරනවා */
+    }
+}
+
+/* ඉතා කුඩා Screen සඳහා (පළල 480px ට වඩා අඩු) */
+@media (max-width: 480px) {
+    .vertical-names {
+        font-size: 12px;
+        left: 2px;
+    }
+}
+
+
+  
+/*birthday venu*/
+/* ප්‍රධාන කාඩ් එක සහ Box Sizing */
+.invitation-card, .invitation-card * {
+    box-sizing: border-box;
+}
+
+.invitation-card {
+    background-color: #f5eedf;
+    border: 15px solid #6d1a29; 
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2), inset 0 0 15px rgba(0, 0, 0, 0.4);
+    position: relative;
+    border-radius: 25px; /* මෙතන අගය වැඩි කළාම ඇතුළත Cream කොටසත් රවුම් වෙනවා */
+    font-family: 'Cutive Mono', monospace; 
+}
+
+.card-top {
+    padding: 30px 30px 40px 30px;
+    
+}
+
+.header-pre {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.header-pre .text {
+    padding: 0 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #222;
+}
+
+.header-pre .line {
+    height: 1.5px;
+    background-color: #222;
+    flex-grow: 1;
+    max-width: 80px;
+}
+
+.header-main {
+    font-family: 'Special Elite', cursive;
+    font-size: 48px;
+    text-align: center;
+    letter-spacing: 2px;
+    color: #111;
+    margin: 0 0 8px 0;
+}
+
+.header-sub {
+    text-align: center;
+    font-size: 16px;
+    margin: 0 0 25px 0;
+    color: #222;
+}
+
+.details-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.details-table td {
+    border-top: 1px solid #ccc;
+    padding: 18px 10px;
+    vertical-align: top;
+    font-size: 17px;
+}
+
+.details-table tr:last-child td {
+    border-bottom: 1px solid #ccc;
+}
+
+.details-table .label {
+    width: 130px;
+    font-weight: bold;
+    color: #614332; 
+    letter-spacing: 1px;
+}
+
+.details-table .value {
+    color: #111;
+}
+
+.card-bottom {
+    background-color: #b88a5d; 
+    padding: 45px 20px 40px;
+    text-align: center;
+    position: relative;
+    color: #3b2514;
+    margin-top: -15px;
+    
+    clip-path: polygon(
+        0% 15px, 2% 0px, 4% 12px, 6% 3px, 8% 14px, 10% 2px, 12% 15px, 14% 5px, 16% 13px, 18% 1px,
+        20% 12px, 22% 4px, 24% 15px, 26% 2px, 28% 14px, 30% 6px, 32% 12px, 34% 1px, 36% 15px, 38% 3px,
+        40% 13px, 42% 5px, 44% 14px, 46% 2px, 48% 12px, 50% 6px, 52% 15px, 54% 1px, 56% 14px, 58% 4px,
+        60% 12px, 62% 2px, 64% 15px, 66% 5px, 68% 13px, 70% 1px, 72% 14px, 74% 6px, 76% 12px, 78% 2px,
+        80% 15px, 82% 4px, 84% 13px, 86% 1px, 88% 14px, 90% 5px, 92% 12px, 94% 2px, 96% 15px, 98% 3px, 100% 14px,
+        100% 100%, 0% 100%
+    );
+}
+
+.join-text {
+    font-size: 16px;
+    margin: 0 0 12px 0;
+}
+
+.celebration-text {
+    font-family: 'Special Elite', cursive;
+    font-size: 34px;
+    color: #8a3324; 
+    font-weight: normal;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+/* Mobile Responsiveness (ෆෝන් වලට ගැලපෙන විදිහට) */
+@media (max-width: 480px) {
+    .card-top {
+        padding: 20px 15px 25px 15px; /* දෙපැත්තේ margin එක අඩු කර ඇත */
+    }
+    
+    .header-main {
+        font-size: 36px;
+    }
+    
+    .header-pre .text {
+        font-size: 14px;
+        padding: 0 10px;
+    }
+    
+    .details-table td {
+        padding: 12px 5px;
+        font-size: 15px;
+    }
+    
+    .details-table .label {
+        width: 90px;
+    }
+    
+    .card-bottom {
+        padding: 35px 15px 30px;
+    }
+    
+    .celebration-text {
+        font-size: 26px;
+    }
+}
+
+ 
+
+    </style>
+</head>
+<body>
+
+   
+
+    
+
+    <div id="invitation-container" >
+        <div class="inpot" >
+        <div class="door-wrapper" id="wrapper" style="align-items: center; ">
+            <div class="door left-door"></div>
+            <div class="door right-door"></div>
+            <div class="seal" onclick="openInvitation()">
+                
+                <small>OPEN</small>
+            </div>
+
+        <div class="vertical-names">
+            Thisumi Birthday
+        </div>
+      
+        </div>
+
+        
+        </div>
+
+        <div class="main-container">
+    <!-- Hero Section -->
+     <div class="invitation-card">
+    <div class="card-top">
+        <div class="header-pre">
+            <span class="line"></span>
+            <span class="text">One For The Books</span>
+            <span class="line"></span>
+        </div>
+        
+        <h1 class="header-main" style="font-family: 'Roboto', sans-serif; font-size: 30px;">CHAPTER SIXTEEN</h1>
+        <p class="header-sub">A story worth celebrating</p>
+
+        <table class="details-table">
+            <tr>
+                <td class="label">TITLE</td>
+                <td class="value">Thisumi's 16th Birthday!</td>
+            </tr>
+            <tr>
+                <td class="label">AUTHOR</td>
+                <td class="value">SWEET SIXTEEN</td>
+            </tr>
+            <tr>
+                <td class="label">PUBLISHED</td>
+                <td class="value">Let's celebrate!</td>
+            </tr>
+            <tr>
+                <td class="label">Theme</td>
+                <td class="value">16 Books</td>
+            </tr>
+            <tr>
+                <td class="label">DATE</td>
+                <td class="value">October 10th, 2026</td>
+            </tr>
+            <tr>
+                <td class="label">LOCATION</td>
+                <td class="value">Pelican hall<br>Waters Edge</td>
+            </tr>
+            <tr>
+                <td class="label">RSVP</td>
+                <td class="value">&#9742; 077 302 0674</td>
+            </tr>
+            <tr>
+                <td class="label">DRESS CODE</td>
+                <td class="value">White, Green, Beige, Brown(No pink)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="card-bottom">
+        <p class="join-text">Join us for a</p>
+        <h2 class="celebration-text" style="font-family: 'Playwrite NO', cursive; font-optical-sizing: auto;">Birthday Celebration!</h2>
+    </div>
+</div>
+    
+
+   
+
+        </div>
+    </div>
+
+    
+
+    
+    <script>
+
+        //count down
+ document.addEventListener("DOMContentLoaded", function() {
+    // හැම බ්‍රවුසර් එකකටම සපෝර්ට් කරන විදිහට දිනය ලබාදීම: (Year, Month Index (ජූලි මාසයට 6), Day, Hour, Minute, Second)
+    // ඔබේ Invitation එකේ උත්සවය රාත්‍රී 7ට (19:00 PM) තියෙන නිසා වෙලාව 19:00:00 ලෙස දැම්මා
+    const weddingDate = new Date(2027, 6, 16, 19, 0, 0).getTime();
+
+    const timerInterval = setInterval(function() {
+        const now = new Date().getTime();
+        const timeLeft = weddingDate - now;
+
+        // කාලය ඉවර වුණොත් (මඟුල් දවස පහුවුණොත්) ඔක්කොම බිංදුව කරලා Timer එක නවත්වනවා
+        if (timeLeft < 0) {
+            clearInterval(timerInterval);
+            document.getElementById("days").innerText = "00";
+            document.getElementById("hours").innerText = "00";
+            document.getElementById("minutes").innerText = "00";
+            document.getElementById("seconds").innerText = "00";
+            return;
+        }
+
+        // දවස්, පැය, මිනිත්තු සහ තත්පර ගණනය කිරීම
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        // HTML එකට Values එකතු කිරීම (ඉලක්කම් 10ට වඩා අඩු නම් ඉදිරියට 0ක් එකතු කරයි)
+        document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+        document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+        document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+        document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+
+    }, 1000);
+});
+
+// ඔබ HTML එකේ බටන්ස් වලට දීලා තියෙන functions (Error නොවී තිබීම සඳහා හිස්ව හෝ මෙලෙස එක් කරන්න)
+function openInvitation() {
+    // ඔබේ openInvitation කෝඩ් එක මෙතනට දාන්න
+    console.log("Invitation Opened");
+}
+
+function scrollToRSVP() {
+    document.getElementById("rsvp-area").scrollIntoView({ behavior: 'smooth' });
+}
+
+         // 1. EmailJS Initialize
+    (function() {
+        // ඔයාගේ Public Key එක මෙතනට දාන්න
+        emailjs.init("aBeQB5WucIfvgeUb_");
+    })();
+
+
+        function openInvitation() {
+            // Container එකට 'opened' class එක දානවා
+            document.getElementById('invitation-container').classList.add('opened');
+            
+            // Scroll කිරීමට ඉඩ ලබා දෙනවා
+            document.body.style.overflow = 'auto';
+
+            const music = document.getElementById('bgMusic');
+            music.play().catch(e => console.log("Music play blocked by browser"));
+        }
+
+        
+
+        // Scroll Animation Logic (Intersection Observer)
+        const animatedImages = document.querySelectorAll('.scroll-animation');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        animatedImages.forEach(img => observer.observe(img));
+
+      
+
+ 
+    
+    </script>
+
+</body>
+</html>
