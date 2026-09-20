@@ -3,205 +3,545 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Thisumi Birthday</title>
-    
-    <!-- EmailJS SDK එක නිවැරදිව මෙතන තියෙනවා -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Grand Opening Invitation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --primary-color: rgb(139, 3, 3); 
-            --bg-color: #ffecec;
-            --text-color: #333;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
+            background-image: url('bg.png');
             font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
-            overflow: hidden; 
-            color: var(--text-color);
+   
+           
         }
 
-        
-        #invitation-container {
+        /* ප්‍රධාන පසුබිම */
+        .invitation-card {
             position: relative;
-            width: 100%;
             height: 100vh;
-            perspective: 1500px;
-            
-         
-        }
-        .opened .corner-img {
-        display: none !important;
-        
-    }
-
-        .door-wrapper {
-            position: fixed;
-            top: 0; left: 0;
             width: 100%;
-            height: 100%;
-            z-index: 100;
-            display: flex;
-            transition: visibility 0s 1.5s;
-            overflow: hidden; 
-          
-        }
-        
-
-        .door {
-            width: 50%;
-            height: 100%;
-            background-color:rgb(139, 3, 3);
-            background-image: url('https://www.transparenttextures.com/patterns/mandala-ornament.png'); 
-            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: inset 0 0 50px rgba(0,0,0,0.3);
-              
-        }
-
-        .left-door { transform-origin: left; border-right: 1px solid rgba(255,255,255,0.1); }
-        .right-door { transform-origin: right; border-left: 1px solid rgba(255,255,255,0.1); }
-
-        .opened .left-door { transform: rotateY(-100deg); }
-        .opened .right-door { transform: rotateY(100deg); }
-        .opened .door-wrapper { visibility: hidden; }
-
-        /* මේ තියෙන්නේ ඔයාගේ පරණ code එකේ තිබ්බ තැන */
-.left-door { 
-    transform-origin: left; 
-    border-right: 2px solid rgb(239, 247, 196); /* මෙතන 0.1 තිබ්බ එක 1 කරාම තද සුදු වෙනවා */
-}
-
-.right-door { 
-    transform-origin: right; 
-    border-left: 2px solid rgb(239, 247, 196); /* මෙතනත් 1 කරලා line එකේ මහත 2px කරා */
-}
-
-        /* Seal / Open Button */
-        .seal {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100px; height: 100px;
-            background: #fff;
-            border-radius: 50%;
-            border: 2px solid rgb(209, 12, 12) ;
+            
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            z-index: 101;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: 0.5s;
-        }
-
-        .seal span { font-weight: bold; color: var(--primary-color); font-size: 14px; }
-        .opened .seal { opacity: 0; pointer-events: none; }
-
-        /* --- Main Content --- */
-        .main-content {
-            padding: 20px;
             text-align: center;
-            max-width: 600px;
-            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* උඩින් යන Sparkle Animations */
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: gold;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 5s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        /* වචන වල Animations */
+        .invited-text {
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
             opacity: 0;
-            transform: translateY(20px);
-            transition: 1s ease 0.8s;
+            animation: fadeInDown 1.5s forwards 0.5s;
         }
 
-        .opened .main-content { opacity: 1; transform: translateY(0); }
-
-        
-        
-        .section { margin-bottom: 50px; padding: 20px; }
-
-        
-        /* Form Style */
-        .rsvp-form input, .rsvp-form select {
-            width: 100%; padding: 12px; margin: 10px 0;
-            border: 1px solid #ddd; border-radius: 8px;
-        }
-        .btn-submit {
-            background: var(--primary-color); color: #fff;
-            padding: 12px 30px; border: none; border-radius: 25px;
-            cursor: pointer; font-size: 16px;
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: #f39c12; /* Golden Orange */
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+            margin-bottom: 15px;
+            opacity: 0;
+            animation: zoomIn 1.5s forwards 1s;
         }
 
-        audio { display: none; }
-
-        .section1 { padding: 40px 20px; width: 100%; }
-        
-        .map-container {
-            width: 100%;
-            height: 300px;
-            margin: 20px 0;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border-radius: 30% 30% 0 0;
+        .time-box {
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            opacity: 0;
+            animation: fadeInUp 1.5s forwards 1.5s;
         }
 
-        iframe { width: 100%; height: 100%; border: 0; }
-
-        
-        /* load animation style */
-        .scroll-animation {
-            opacity: 0; 
-            transform: translateY(50px); 
-            transition: all 0.6s ease-out; 
+        .details {
+            font-size: 1rem;
+            line-height: 1.8;
+            opacity: 0;
+            animation: fadeInUp 1.5s forwards 2s;
         }
 
-        .scroll-animation.active {
-            opacity: 1; 
-            transform: translateY(0); 
+        .location {
+            font-weight: 600;
+            color: #f39c12;
         }
 
-     /*text vertical*/
-    /* Desktop සහ Tablet සඳහා (සාමාන්‍ය විදිහ) */
-.vertical-names {
-    position: fixed;
-    font-family: "Roboto Condensed", sans-serif;
-    left: 12px !important;
-    top: 50%;
-    transform: translateY(-50%);
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    letter-spacing: 5px !important;
-    color: #ffffff ;
-    z-index: 1000;
-    font-size: 20px !important;
-    writing-mode: vertical-rl;
-    transform: translateY(-50%) rotate(180deg); 
-    text-align: center;
+        /* Animations Keyframes */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 600px) {
+            .main-title { font-size: 2.2rem; }
+            .time-box { font-size: 1rem; }
+            .details { font-size: 0.9rem; }
+        }
+
+
+        /*box venu*/
+    .wedding-card-container {
+    max-width: 400px;
+    margin: 20px auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 10px;
+    background-color: #ffffff;
 }
 
-/* Mobile Screens (පළල 768px ට වඩා අඩු phone සඳහා) */
-@media (max-width: 768px) {
-    .vertical-names {
-        left: 5px;          /* වම් පැත්තට තවත් ලං කරනවා */
-        font-size: 14px;    /* අකුරු පොඩි කරනවා */
-        letter-spacing: 1px;
-        opacity: 0.6;       /* Content එක පේන්න ඕන නිසා ටිකක් ලා කරනවා */
-    }
+/* ඉහළ තොරතුරු කොටස */
+.wedding-info-box {
+    background-color: #fdf2e9; /* පින්තූරයේ ඇති ලා පැහැය */
+    padding: 30px 25px;
+    border-radius: 40px 10px 40px 10px; /* පින්තූරයේ ඇති ආකාරයට කොන් හැඩ ගැන්වීම */
+    margin-bottom: 20px;
+    color: #5d4037;
 }
 
-/* ඉතා කුඩා Screen සඳහා (පළල 480px ට වඩා අඩු) */
+.wedding-date-top {
+    font-size: 16px;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.couple-names {
+    font-size: 28px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    color: #a0522d;
+    font-weight: bold;
+}
+
+.event-details p {
+    margin: 8px 0;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.invite-note {
+    margin-top: 20px;
+    font-style: italic;
+    font-size: 14px;
+}
+
+/* පහළ ඡායාරූප කොටස */
+.wedding-image-box {
+    width: 100%;
+    overflow: hidden;
+}
+
+.couple-photo {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 20px; /* පින්තූරයේ කොන් වටකුරු කිරීමට */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+
+/*time line*/
+
+:root {
+    --light-pink: #fdf2f4;
+    --gold-brown: #996515;
+    --text-color: #5d4037;
+}
+.wedding-timeline {
+    background-color: var(--light-pink);
+    padding: 50px 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+}
+
+.timeline-container {
+    position: relative;
+    max-width: 500px;
+    width: 100%;
+}
+
+/* සිරස් රේඛාව */
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--gold-brown);
+    opacity: 0.3;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 40px;
+    padding-left: 60px;
+}
+
+/* රවුම් අයිකනය */
+.timeline-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 42px;
+    height: 42px;
+    background-color: #fff;
+    border: 2px solid var(--gold-brown);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    box-shadow: 0 2px 5px rgba(153, 101, 21, 0.2);
+}
+
+.timeline-icon .icon {
+    font-size: 18px;
+}
+
+/* විස්තර */
+.timeline-content h3 {
+    margin: 0;
+    color: var(--gold-brown);
+    font-size: 22px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.timeline-content p {
+    margin: 5px 0 0;
+    color: var(--text-color);
+    font-size: 18px;
+    font-weight: 400;
+}
+
+/* Mobile optimizations */
 @media (max-width: 480px) {
-    .vertical-names {
-        font-size: 12px;
-        left: 2px;
+    .timeline-content h3 {
+        font-size: 18px;
+    }
+    .timeline-content p {
+        font-size: 16px;
     }
 }
 
+/*founder*/
+/* සාමාන්‍ය Container එක (Image Left, Text Right) */
+    .ac-container {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 40px;
+        padding: 50px 20px;
+        background: #ffffff; 
+        color: #000000;
+        font-family: "DynaPuff", system-ui;; /* කලින් කතා කරපු Font එක */
+        max-width: 1200px;
+        margin: 0 auto;
+    }
 
   
+    /* පින්තූරය දකුණට සහ Text එක වමට ගන්න පාවිච්චි කරන Class එක */
+    .ac-reverse {
+        flex-direction: row-reverse;
+    }
+
+    .ac-image, .ac-text {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .ac-image img {
+        width: 100%;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(161, 158, 158, 0.5);
+        transition: transform 0.3s ease; /* Hover Effect එකක් සඳහා */
+    }
+    
+    /* පින්තූරය උඩින් යද්දී පොඩි Zoom එකක් */
+   
+
+    .ac-text h2 {
+        color: #705c09; /* Ceylon Yellow */
+        font-size: 32px;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    
+
+    
+
+   
+    @media (max-width: 768px) {
+        .ac-container {
+            flex-direction: column !important; /* row-reverse එක override කරන්න */
+            text-align: center;
+        }
+        .ac-text h2 { font-size: 24px; }
+    }
+
+    /*map*/
+.map-container {
+            width: 100%;
+            height: 300px;
+           
+            border-radius: 15px;
+            overflow: hidden;
+            border-radius: 30% 30% 0 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+           
+        }
+
+    .section5 {
+
+    background-color: white;
+    text-align: center; /* මේකෙන් තමයි ඇතුළේ තියෙන ඔක්කොම මැදට ගන්නේ */
+    padding: 40px 20px;
+     }
+
+    
+
+       
+
+         /*foter*/
+    .wedding-footer {
+    padding: 40px 20px;
+    text-align: center;
+    background-color: transparent;
+    width: 100%;
+    margin-top: 50px;
+}
+
+.footer-line {
+    width: 60px;
+    height: 2px;
+    background-color: var(--primary-color);
+    margin: 0 auto 15px;
+    opacity: 0.5;
+}
+
+.design-by {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--primary-color);
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.phone-link {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #666;
+    text-decoration: none;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.phone-link:hover {
+    color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+/* Mobile එකට පොඩි tuning එකක් */
+@media (max-width: 480px) {
+    .wedding-footer {
+        padding: 30px 10px;
+    }
+    .design-by {
+        font-size: 16px;
+    }
+}
+
+    /*contact box*/
+    /* Contact Box එකේ Style එක */
+.contact-card {
+    width: 90%; /* Mobile වලදී දෙපැත්තෙන් ඉඩ තියනවා */
+    max-width: 450px; /* Desktop එකේදී ගොඩක් ලොකු වෙන්නේ නැහැ */
+    background: #ffffff;
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 20px; /* ලස්සනට වටකුරු කරපු කොන් */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); /* ලස්සන shadow එකක් */
+    border: 1px solid #f0e0eb; /* ඉතා සියුම් border එකක් */
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+/* Hover කරද්දී පොඩි movement එකක් (Desktop වලට) */
+.contact-card:hover {
+    transform: translateY(-5px);
+}
+
+.contact-card h4 {
+    color: var(--primary-color);
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.contact-card p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.contact-link {
+    display: inline-block;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    border-bottom: 1.5px solid var(--primary-color);
+    padding-bottom: 2px;
+}
+
+.dear{
+font-size: 30px;
+}
+
+
+/*side image*/
+.food-section {
+    text-align: center;
+    padding: 20px;
+    font-family: sans-serif;
+}
+
+.food-section h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.slider-container {
+    width: 100%;
+    max-width: 400px; /* Desktop එකේ slider එකේ size එක පාලනය කරන්න */
+    margin: 0 auto;
+    overflow: hidden; /* පිට පනින පින්තූර වහන්න */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.slider-wrapper {
+    display: flex;
+    width: 100%;
+    transition: transform 0.5s ease-in-out; /* Slide වෙන වේගය */
+}
+
+.food-item {
+    min-width: 100%; /* එක පාරකට එක රූපයක් විතරයි පේන්නේ */
+    box-sizing: border-box;
+}
+
+.food-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover; /* පින්තූරේ විකෘති නොවී පේන්න */
+    display: block;
+}
+
+
+  /* ❤️ HEARTBEAT ANIMATION STYLES */
+.heartbeat-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0; /* උඩින් සහ පල්ලෙහින් පරතරය */
+}
+
+.heartbeat-container {
+    position: relative;
+    width: 300px; /* Animation එකේ පළල */
+    height: 100px; /* Animation එකේ උස */
+}
+
+.heartbeat-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.beat-path {
+    fill: none;
+    stroke: #fbf9f6; /* රේඛාවේ පාට (Cream/Ivory) */
+    stroke-width: 3; /* රේඛාවේ තදකම */
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    /* Animation settings */
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+    animation: drawBeat 2s linear infinite; /* Animation එක තත්පර 2කින් repeat වේ */
+}
+
+.heartbeat-number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* හරියටම මැදට align කිරීම */
+    font-family: 'Playfair Display', serif; /* Main font එක */
+    font-size: 2.8rem; /* '18' ඉලක්කමේ විශාලත්වය */
+    color: #fbf9f6; /* ඉලක්කමේ පාට */
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(251, 249, 246, 0.7); /* ලාවට දිලිසෙන ගතියක් දීමට */
+}
+
+/* Animation Keyframes - රේඛාව ඇඳෙන ආකාරය */
+@keyframes drawBeat {
+    0% {
+        stroke-dashoffset: 600;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+
+
+
 /*birthday venu*/
 /* ප්‍රධාන කාඩ් එක සහ Box Sizing */
 .invitation-card, .invitation-card * {
@@ -210,19 +550,17 @@
 
 .invitation-card {
     background-color: #f5eedf;
-    border: 15px solid #6d1a29; 
     width: 100%;
     max-width: 500px;
-    margin: 0 auto; 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2), inset 0 0 15px rgba(0, 0, 0, 0.4);
+    margin: 0 auto; /* සයිට් එකේ මැදට එන්න */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     position: relative;
-    border-radius: 25px; /* මෙතන අගය වැඩි කළාම ඇතුළත Cream කොටසත් රවුම් වෙනවා */
+    border-radius: 3px;
     font-family: 'Cutive Mono', monospace; 
 }
 
 .card-top {
     padding: 30px 30px 40px 30px;
-    
 }
 
 .header-pre {
@@ -354,38 +692,884 @@
     }
 }
 
- 
+
+
+/*img*/
+.birthday-image-container {
+    margin: 0;
+    text-align: center;
+   
+    padding: 0 ; /* ජංගම දුරකථන වලට දෙපැත්තෙන් ඉඩ */
+}
+
+.birthday-image {
+    margin: 0;
+    max-width: 100%; /* පින්තූරය responsive කිරීමට */
+    height: auto;
+    border: 5px solid #d1c7ac; /* පැරණි පින්තූර රාමුවක් වැනි border */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 0;
+}
+
+.image-caption {
+    font-family: 'Cutive Mono', monospace; 
+    margin: 0;
+    font-size: 16px;
+   
+    color: #4b3621; /* තද දුඹුරු පැහැය */
+}
+
+/* Mobile Responsiveness (ජංගම දුරකථන සඳහා) */
+@media (max-width: 480px) {
+    .image-caption {
+        font-size: 14px; /* ජංගම දුරකථන වලට කුඩා අකුරු */
+    }
+}
+
+
+
+/*count down*/
+/* ===== GOLD BIRTHDAY COUNTDOWN ===== */
+
+.birthday-countdown {
+    background-color: rgb(71, 15, 25);
+  text-align: center;
+  padding: 30px 20px;
+  font-family: "Georgia", serif;
+}
+
+.countdown-title {
+  color: #d4af37;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  margin-bottom: 22px;
+  text-transform: uppercase;
+}
+
+.countdown-boxes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.countdown-item {
+  min-width: 95px;
+  padding: 18px 12px;
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  border-radius: 12px;
+
+  background: linear-gradient(
+    145deg,
+    rgba(255, 215, 100, 0.12),
+    rgba(212, 175, 55, 0.03)
+  );
+
+  box-shadow:
+    0 0 18px rgba(212, 175, 55, 0.08),
+    inset 0 0 15px rgba(212, 175, 55, 0.04);
+
+  backdrop-filter: blur(5px);
+}
+
+.countdown-item span {
+  display: block;
+  color: #d4af37;
+  font-size: 38px;
+  line-height: 1;
+  font-weight: 600;
+
+  text-shadow:
+    0 0 8px rgba(212, 175, 55, 0.35);
+}
+
+.countdown-item small {
+  display: block;
+  margin-top: 10px;
+  color: #b8962e;
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+.countdown-separator {
+  color: #d4af37;
+  font-size: 30px;
+  font-weight: 300;
+  margin-top: -18px;
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+}
+
+.countdown-message {
+  margin-top: 20px;
+  color: #c9a84e;
+  font-size: 14px;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .countdown-boxes {
+    gap: 5px;
+  }
+
+  .countdown-item {
+    min-width: 62px;
+    padding: 14px 7px;
+  }
+
+  .countdown-item span {
+    font-size: 25px;
+  }
+
+  .countdown-item small {
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+
+  .countdown-separator {
+    font-size: 20px;
+  }
+
+  .countdown-title {
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+}
+
+
+/*rsvp*/
+/* =========================================
+   GOLD LUXURY RSVP
+========================================= */
+
+.rsvp-section {
+  width: 100%;
+  padding: 90px 20px;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.rsvp-container {
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* Heading */
+
+.rsvp-heading {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.rsvp-small-title {
+  display: block;
+  margin-bottom: 10px;
+
+  color: #b89535;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
+}
+
+.rsvp-heading h2 {
+  margin: 0;
+
+  color: #b89535;
+  font-family: Georgia, serif;
+  font-size: 48px;
+  font-weight: 400;
+  letter-spacing: 2px;
+}
+
+.rsvp-heading p {
+  margin: 14px auto 0;
+  max-width: 430px;
+
+  color: #777;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+
+/* Form */
+
+#rsvp-form {
+  width: 100%;
+}
+
+.rsvp-field {
+  margin-bottom: 27px;
+}
+
+.rsvp-field > label {
+  display: block;
+  margin-bottom: 10px;
+
+  color: #555;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.rsvp-field > label span {
+  color: #aaa;
+  font-weight: 400;
+}
+
+
+/* Inputs */
+
+.rsvp-field input[type="text"],
+.rsvp-field select,
+.rsvp-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 15px 17px;
+
+  border: 1px solid #ded3b6;
+  border-radius: 7px;
+
+  background: #fff;
+  color: #333;
+
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.rsvp-field input[type="text"]::placeholder,
+.rsvp-field textarea::placeholder {
+  color: #aaa;
+}
+
+.rsvp-field input[type="text"]:focus,
+.rsvp-field select:focus,
+.rsvp-field textarea:focus {
+  border-color: #c9a84e;
+
+  box-shadow:
+    0 0 0 3px rgba(201, 168, 78, 0.10);
+}
+
+.rsvp-field textarea {
+  resize: vertical;
+  min-height: 105px;
+}
+
+
+/* =========================================
+   ATTENDANCE OPTIONS
+========================================= */
+
+.rsvp-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rsvp-option {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 15px 17px;
+
+  border: 1px solid #e2d8bd;
+  border-radius: 7px;
+
+  background: #fff;
+
+  color: #555;
+
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+.rsvp-option:hover {
+  border-color: #c9a84e;
+  background: #fffdf8;
+}
+
+.rsvp-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+/* Custom radio */
+
+.custom-radio {
+  width: 18px;
+  height: 18px;
+
+  border: 1.5px solid #c9a84e;
+  border-radius: 50%;
+
+  box-sizing: border-box;
+
+  position: relative;
+  flex-shrink: 0;
+}
+
+.rsvp-option input:checked + .custom-radio::after {
+  content: "";
+
+  position: absolute;
+
+  width: 8px;
+  height: 8px;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  background: #c9a84e;
+  border-radius: 50%;
+}
+
+.rsvp-option:has(input:checked) {
+  border-color: #c9a84e;
+  background: #fffaf0;
+}
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+#rsvp-submit {
+  width: 100%;
+
+  margin-top: 8px;
+  padding: 16px 22px;
+
+  border: 1px solid #c9a84e;
+  border-radius: 7px;
+
+  background: linear-gradient(
+    135deg,
+    #d8bd6b,
+    #b89535
+  );
+
+  color: #fff;
+
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+
+  letter-spacing: 2px;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+
+  box-shadow:
+    0 6px 20px rgba(184, 149, 53, 0.18);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+#rsvp-submit:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 9px 25px rgba(184, 149, 53, 0.25);
+}
+
+#rsvp-submit:active {
+  transform: translateY(0);
+}
+
+#rsvp-submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.rsvp-arrow {
+  font-size: 18px;
+  line-height: 0;
+}
+
+
+/* =========================================
+   STATUS MESSAGE
+========================================= */
+
+#rsvp-status {
+  margin-top: 18px;
+
+  text-align: center;
+
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+#rsvp-status.success {
+  color: #9b7b25;
+}
+
+#rsvp-status.error {
+  color: #b04a4a;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .rsvp-section {
+    padding: 65px 18px;
+  }
+
+  .rsvp-heading {
+    margin-bottom: 35px;
+  }
+
+  .rsvp-heading h2 {
+    font-size: 40px;
+  }
+
+  .rsvp-heading p {
+    font-size: 13px;
+  }
+
+  .rsvp-field {
+    margin-bottom: 22px;
+  }
+
+  .rsvp-option {
+    padding: 14px;
+  }
+}
+
+
+
+/*footer*/
+.birthday-footer {
+  width: 100%;
+  background: #050505;
+  color: #d4af37;
+  padding: 70px 25px 25px;
+  box-sizing: border-box;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.footer-content {
+  max-width: 1100px;
+  margin: 0 auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  text-align: center;
+}
+
+.footer-section {
+  flex: 1;
+  padding: 10px 35px;
+}
+
+.footer-icon {
+  color: #d4af37;
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+
+.footer-section h3 {
+  margin: 0 0 14px;
+
+  color: #c9a84e;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.footer-section h2 {
+  margin: 0 0 12px;
+
+  color: #e2c76b;
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: 2px;
+}
+
+.footer-section p {
+  margin: 8px 0;
+
+  color: #b8a77a;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.footer-section a {
+  color: #c9a84e;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.footer-section a:hover {
+  color: #f1d77d;
+}
+
+.footer-birthday {
+  max-width: 240px;
+  margin: 0 auto !important;
+  font-style: italic;
+}
+
+.footer-date {
+  color: #e2c76b !important;
+  font-family: Georgia, serif !important;
+  font-size: 21px !important;
+  letter-spacing: 3px;
+}
+
+
+/* Vertical dividers */
+
+.footer-divider {
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(212, 175, 55, 0.55),
+    transparent
+  );
+}
+
+
+/* Bottom */
+
+.footer-bottom {
+  max-width: 1100px;
+  margin: 45px auto 0;
+  text-align: center;
+}
+
+.footer-line {
+  width: 100%;
+  height: 1px;
+
+  margin-bottom: 25px;
+
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(212, 175, 55, 0.55),
+    transparent
+  );
+}
+
+.footer-bottom p {
+  margin: 8px 0;
+
+  color: #806f47;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.footer-bottom p span {
+  color: #d4af37;
+  font-size: 15px;
+}
+
+.footer-bottom .creator {
+  margin-top: 18px;
+
+  color: #a58d51;
+  font-size: 12px;
+}
+
+.footer-bottom .creator strong {
+  color: #d4af37;
+  font-weight: 600;
+}
+
+.creator-number {
+  margin-left: 5px;
+  color: #c2a75a !important;
+  font-size: 12px !important;
+}
+
+.footer-bottom .copyright {
+  margin-top: 15px;
+
+  color: #554a35;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+  .birthday-footer {
+    padding: 55px 20px 22px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .footer-section {
+    padding: 5px 10px;
+  }
+
+  .footer-divider {
+    width: 80%;
+    height: 1px;
+    margin: 0 auto;
+
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(212, 175, 55, 0.5),
+      transparent
+    );
+  }
+
+  .footer-section h2 {
+    font-size: 25px;
+  }
+
+  .footer-bottom {
+    margin-top: 35px;
+  }
+}
+
+/*animation video*/
+/* Intro Video Overlay Styles */
+.intro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+}
+
+#intro-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+}
+
+/* View Invitation Button Styles (දකුණු පැත්තේ යටින්) */
+.view-invitation-btn {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    background-color: rgba(255, 255, 255, 0.85);
+    color: #3b2514;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-family: 'Cutive Mono', monospace;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 100000;
+    transition: all 0.3s ease;
+}
+
+.view-invitation-btn:hover {
+    background-color: #fff;
+    transform: scale(1.05);
+}
+
+/* Mobile Responsiveness (ජංගම දුරකථන සඳහා සකස් කිරීම) */
+@media (max-width: 480px) {
+    .view-invitation-btn {
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 18px;
+        font-size: 14px;
+    }
+}
+
+
+
+
+    /* Loading Screen Overlay Styles */
+.loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f5eedf; /* වෙබ් සයිට් එකේ theme එකට ගැලපෙන පාටක් */
+    z-index: 999999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Cutive Mono', monospace;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.loader-content {
+    text-align: center;
+    width: 80%;
+    max-width: 320px;
+}
+
+.loader-title {
+    font-family: 'Special Elite', cursive;
+    font-size: 26px;
+    color: #3b2514;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Loading Progress Bar Box */
+.loader-progress-box {
+    width: 100%;
+    height: 6px;
+    background-color: #e0d5c1;
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid #c9beaa;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.loader-bar {
+    width: 0%;
+    height: 100%;
+    background-color: #8a3324; /* තද රතු පැහැති ලෝඩින් බාර් එක */
+    transition: width 0.2s ease-out;
+}
+
+.loader-percentage {
+    font-size: 18px;
+    font-weight: bold;
+    color: #614332;
+    margin-top: 12px;
+}
+
+/* Fade out class (ලෝඩ් වී අවසන් වූ පසු screen එක අතුරුදහන් කිරීමට) */
+.loader-hidden {
+    opacity: 0;
+    visibility: hidden;
+}
 
     </style>
 </head>
 <body>
 
-   
+    <!-- Full Page Loading Screen -->
+<div id="page-loader" class="loader-overlay">
+    <div class="loader-content">
+        <h2 class="loader-title">Chapter Unlocked</h2>
+        <div class="loader-progress-box">
+            <div id="loader-bar" class="loader-bar"></div>
+        </div>
+        <div id="loader-percentage" class="loader-percentage">0%</div>
+    </div>
+</div>
 
+    <!-- Intro Video Overlay -->
+<div id="intro-video-container" class="intro-overlay">
+    <video id="intro-video" autoplay playsinline muted>
+        <source src="anime.mp4" type="video/mp4">
+        ඔබගේ බ්‍රව්සරය වීඩියෝ සඳහා සහය නොදක්වයි.
+    </video>
     
+    <!-- දකුණු පැත්තේ යටින් ඇති Skip Button එක -->
+    <button id="skip-btn" class="view-invitation-btn">View Invitation</button>
+</div>
 
-    <div id="invitation-container" >
-        <div class="inpot" >
-        <div class="door-wrapper" id="wrapper" style="align-items: center; ">
-            <div class="door left-door"></div>
-            <div class="door right-door"></div>
-            <div class="seal" onclick="openInvitation()">
-                
-                <small>OPEN</small>
-            </div>
+    <div class="invitation-card" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                        url('1.png') no-repeat center center/cover;">
+        <div class="sparkle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="sparkle" style="left: 30%; animation-delay: 2s;"></div>
+        <div class="sparkle" style="left: 70%; animation-delay: 1s;"></div>
+        <div class="sparkle" style="left: 90%; animation-delay: 3s;"></div>
 
-        <div class="vertical-names">
-            Thisumi Birthday
-        </div>
-      
-        </div>
+        <h1 style="color: rgb(247, 240, 240);font-family: 'Alfa Slab One', serif;  font-weight: 400;font-style: normal; ">Thisumi <span style="color: rgb(221, 8, 8);">Kavishka</span></h1>
 
+        <p class="invited-text">Level Up! Age 16 Unlocked</p>
         
+        <div style="margin-bottom: 10px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/2737/2737034.png" width="50" style="filter: invert(1);">
         </div>
 
-        <div class="main-container">
-    <!-- Hero Section -->
-     <div class="invitation-card">
+        <h2 class="main-title">BIRTHDAY INVITATIOn</h2>
+
+        <div class="time-box">
+            2026.10.10 - 06:00 PM
+        </div>
+
+        <div class="details">
+            <p style="font-size: 18px;">Join Me To Celebrate :</p>
+            <p class="location" style="font-size: 20px; color: rgb(139, 3, 3); font-family: 'Archivo Black', sans-serif;" id="guest-name">Guest</p>
+        </div>
+    </div>
+
+
+    <div class="heartbeat-wrapper">
+    <div class="heartbeat-container">
+        <svg class="heartbeat-line" viewBox="0 0 300 100" preserveAspectRatio="none">
+            <path class="beat-path" d="M0,50 L50,50 L60,20 L70,80 L80,50 L110,50" />
+            <path class="beat-path" d="M190,50 L220,50 L230,20 L240,80 L250,50 L300,50" />
+        </svg>
+        <div class="heartbeat-number">16</div>
+    </div>
+</div>
+
+
+    <!-- Invitation Card HTML -->
+<div class="invitation-card">
     <div class="card-top">
         <div class="header-pre">
             <span class="line"></span>
@@ -393,7 +1577,7 @@
             <span class="line"></span>
         </div>
         
-        <h1 class="header-main" style="font-family: 'Roboto', sans-serif; font-size: 30px;">CHAPTER SIXTEEN</h1>
+        <h1 class="header-main">CHAPTER ONE</h1>
         <p class="header-sub">A story worth celebrating</p>
 
         <table class="details-table">
@@ -403,15 +1587,11 @@
             </tr>
             <tr>
                 <td class="label">AUTHOR</td>
-                <td class="value">SWEET SIXTEEN</td>
+                <td class="value">The Thisumi Family</td>
             </tr>
             <tr>
                 <td class="label">PUBLISHED</td>
                 <td class="value">Let's celebrate!</td>
-            </tr>
-            <tr>
-                <td class="label">Theme</td>
-                <td class="value">16 Books</td>
             </tr>
             <tr>
                 <td class="label">DATE</td>
@@ -423,114 +1603,482 @@
             </tr>
             <tr>
                 <td class="label">RSVP</td>
-                <td class="value">&#9742; 077 302 0674</td>
-            </tr>
-            <tr>
-                <td class="label">DRESS CODE</td>
-                <td class="value">White, Green, Beige, Brown (No pink , No denim)</td>
+                <td class="value">&#9742; 071-654-3210</td>
             </tr>
         </table>
     </div>
 
     <div class="card-bottom">
         <p class="join-text">Join us for a</p>
-        <h2 class="celebration-text" style="font-family: 'Playwrite NO', cursive; font-optical-sizing: auto;">Birthday Celebration!</h2>
+        <h2 class="celebration-text">Birthday Celebration!</h2>
     </div>
 </div>
-    
 
-   
+<div class="birthday-image-container">
+    <!-- 2.jpg පින්තූරය මෙතනින් සම්බන්ධ වේ -->
+    <img src="2.jpg" alt="Birthday Photo" class="birthday-image">
 
-        </div>
+</div>
+
+
+
+
+<!--map-->
+     <div class="section5" style="align-items: center">
+                <h2 style="margin-bottom: 20px; color: #8D472B; margin-top: 0px !important; align-items: center ;">The Venue</h2>
+                <p style="color: #8D472B; align-items: center ;">Waters Edge - Pelican hall</p>
+                <div class="map-container" >
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4567.610503538387!2d80.90086557179671!3d6.656915409688962!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae40d4345f96a45%3A0xed7198842d17a7e9!2sDrivegreen%20Vehicle%20Emission%20Testing%20Centre-%20Kalthota!5e1!3m2!1sen!2slk!4v1778258847360!5m2!1sen!2slk" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"style="height: 300px; border-radius: 50px 50px 0 0 !important;"></iframe>
+                </div>
+            </div>
+
+    <!-- Wedding Countdown Section -->
+<div class="birthday-countdown">
+  <div class="countdown-title">COUNTDOWN TO THE CELEBRATION</div>
+
+  <div class="countdown-boxes">
+    <div class="countdown-item">
+      <span id="days">00</span>
+      <small>DAYS</small>
     </div>
 
-    
+    <div class="countdown-separator">:</div>
 
-    
-    <script>
+    <div class="countdown-item">
+      <span id="hours">00</span>
+      <small>HOURS</small>
+    </div>
 
-        //count down
- document.addEventListener("DOMContentLoaded", function() {
-    // හැම බ්‍රවුසර් එකකටම සපෝර්ට් කරන විදිහට දිනය ලබාදීම: (Year, Month Index (ජූලි මාසයට 6), Day, Hour, Minute, Second)
-    // ඔබේ Invitation එකේ උත්සවය රාත්‍රී 7ට (19:00 PM) තියෙන නිසා වෙලාව 19:00:00 ලෙස දැම්මා
-    const weddingDate = new Date(2027, 6, 16, 19, 0, 0).getTime();
+    <div class="countdown-separator">:</div>
 
-    const timerInterval = setInterval(function() {
-        const now = new Date().getTime();
-        const timeLeft = weddingDate - now;
+    <div class="countdown-item">
+      <span id="minutes">00</span>
+      <small>MINUTES</small>
+    </div>
 
-        // කාලය ඉවර වුණොත් (මඟුල් දවස පහුවුණොත්) ඔක්කොම බිංදුව කරලා Timer එක නවත්වනවා
-        if (timeLeft < 0) {
-            clearInterval(timerInterval);
-            document.getElementById("days").innerText = "00";
-            document.getElementById("hours").innerText = "00";
-            document.getElementById("minutes").innerText = "00";
-            document.getElementById("seconds").innerText = "00";
-            return;
-        }
+    <div class="countdown-separator">:</div>
 
-        // දවස්, පැය, මිනිත්තු සහ තත්පර ගණනය කිරීම
-        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+    <div class="countdown-item">
+      <span id="seconds">00</span>
+      <small>SECONDS</small>
+    </div>
+  </div>
 
-        // HTML එකට Values එකතු කිරීම (ඉලක්කම් 10ට වඩා අඩු නම් ඉදිරියට 0ක් එකතු කරයි)
-        document.getElementById("days").innerText = days < 10 ? "0" + days : days;
-        document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
-        document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
-        document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+  <div id="countdown-message" class="countdown-message">
+    Until the special day ✨
+  </div>
+</div>
 
-    }, 1000);
+    <!-- RSVP Section -->
+   
+     <section class="rsvp-section" id="rsvp">
+
+  <div class="rsvp-container">
+
+    <div class="rsvp-heading">
+      <span class="rsvp-small-title">YOU'RE INVITED</span>
+      <h2>RSVP</h2>
+      <p>We would love to celebrate this special day with you.</p>
+    </div>
+
+    <form id="rsvp-form">
+
+      <!-- Name -->
+      <div class="rsvp-field">
+        <label for="guest_name">Your Name</label>
+        <input
+          type="text"
+          id="guest_name"
+          name="guest_name"
+          placeholder="Enter your name"
+          required
+        >
+      </div>
+
+      <!-- Attending -->
+      <div class="rsvp-field">
+        <label>Will you be attending?</label>
+
+        <div class="rsvp-options">
+
+          <label class="rsvp-option">
+            <input
+              type="radio"
+              name="attendance"
+              value="Yes, I will attend"
+              required
+            >
+            <span class="custom-radio"></span>
+            <span>Yes, I'll be there </span>
+          </label>
+
+          <label class="rsvp-option">
+            <input
+              type="radio"
+              name="attendance"
+              value="Sorry, I can't attend"
+            >
+            <span class="custom-radio"></span>
+            <span>Sorry, I can't attend</span>
+          </label>
+
+        </div>
+      </div>
+
+      <!-- Number of guests -->
+      <div class="rsvp-field">
+        <label for="guest_count">Number of Guests</label>
+
+        <select id="guest_count" name="guest_count" required>
+          <option value="" disabled selected>
+            Select number of guests
+          </option>
+          <option value="1">1 Guest</option>
+          <option value="2">2 Guests</option>
+          <option value="3">3 Guests</option>
+          <option value="4">4 Guests</option>
+          <option value="5">Family</option>
+          
+        </select>
+      </div>
+
+      <!-- Message -->
+      <div class="rsvp-field">
+        <label for="message">Message <span>(Optional)</span></label>
+
+        <textarea
+          id="message"
+          name="message"
+          rows="4"
+          placeholder="Leave a little message..."
+        ></textarea>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" id="rsvp-submit">
+        <span>Confirm RSVP</span>
+        <span class="rsvp-arrow">→</span>
+      </button>
+
+      <!-- Status -->
+      <div id="rsvp-status"></div>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+    <footer class="birthday-footer">
+
+  <div class="footer-content">
+
+    <!-- Birthday Girl -->
+    <div class="footer-section">
+      <div class="footer-icon">✦</div>
+
+      <h3>Birthday Girl</h3>
+
+      <h2>Thisumi Kavishka</h2>
+
+      <p class="footer-birthday">
+        Celebrating another beautiful year of life ✨
+      </p>
+    </div>
+
+
+    <div class="footer-divider"></div>
+
+
+    <!-- Contact -->
+    <div class="footer-section">
+      <h3>Get In Touch</h3>
+
+      <p>
+        📞 <a href="tel:+947XXXXXXXX">+94 7X XXX XXXX</a>
+      </p>
+
+      <p>
+        ✉️ <a href="mailto:example@email.com">
+          example@email.com
+        </a>
+      </p>
+
+      <p>
+        📍 Your Location
+      </p>
+    </div>
+
+
+    <div class="footer-divider"></div>
+
+
+    <!-- Event -->
+    <div class="footer-section">
+      <h3>Let's Celebrate</h3>
+
+      <p class="footer-date">
+        10 • 10 • 2026
+      </p>
+
+      <p>
+        6:00 PM
+      </p>
+
+      <p>
+        Your Special Celebration
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- Bottom -->
+  <div class="footer-bottom">
+
+    <div class="footer-line"></div>
+
+    <p>
+      Made with <span>♥</span> for a special celebration
+    </p>
+
+    <p class="creator">
+      Created by <strong>Home Artist</strong>
+      <span class="creator-number">0781227941</span>
+    </p>
+
+    <p class="copyright">
+      © 2026 All Rights Reserved
+    </p>
+
+  </div>
+
+</footer>
+
+
+     <script>
+        /* ===== BIRTHDAY COUNTDOWN ===== */
+/* Target: October 10, 2026 - 6:00 PM
+   Sri Lanka Time (UTC+05:30)
+*/
+
+const birthdayDate = new Date("2026-10-10T18:00:00+05:30").getTime();
+
+const countdownTimer = setInterval(function () {
+
+  const now = new Date().getTime();
+  const distance = birthdayDate - now;
+
+  if (distance <= 0) {
+    clearInterval(countdownTimer);
+
+    document.getElementById("days").textContent = "00";
+    document.getElementById("hours").textContent = "00";
+    document.getElementById("minutes").textContent = "00";
+    document.getElementById("seconds").textContent = "00";
+
+    document.getElementById("countdown-message").textContent =
+      "The celebration has begun! ✨";
+
+    return;
+  }
+
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor(
+    (distance % (1000 * 60 * 60 * 24)) /
+    (1000 * 60 * 60)
+  );
+
+  const minutes = Math.floor(
+    (distance % (1000 * 60 * 60)) /
+    (1000 * 60)
+  );
+
+  const seconds = Math.floor(
+    (distance % (1000 * 60)) /
+    1000
+  );
+
+  document.getElementById("days").textContent =
+    String(days).padStart(2, "0");
+
+  document.getElementById("hours").textContent =
+    String(hours).padStart(2, "0");
+
+  document.getElementById("minutes").textContent =
+    String(minutes).padStart(2, "0");
+
+  document.getElementById("seconds").textContent =
+    String(seconds).padStart(2, "0");
+
+}, 1000);
+
+
+
+//rsvp
+<!-- EMAILJS SDK -->
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+  /* =========================================
+     EMAILJS CONFIGURATION
+  ========================================= */
+
+  emailjs.init({
+    publicKey: "YOUR_PUBLIC_KEY"
+  });
+
+
+  /* =========================================
+     RSVP FORM
+  ========================================= */
+
+  const rsvpForm = document.getElementById("rsvp-form");
+  const rsvpButton = document.getElementById("rsvp-submit");
+  const rsvpStatus = document.getElementById("rsvp-status");
+
+  rsvpForm.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    /* Button loading state */
+    rsvpButton.disabled = true;
+    rsvpButton.innerHTML = `
+      <span>Sending...</span>
+    `;
+
+    rsvpStatus.textContent = "";
+    rsvpStatus.className = "";
+
+
+    /* Send form through EmailJS */
+
+    emailjs.sendForm(
+      "YOUR_SERVICE_ID",
+      "YOUR_TEMPLATE_ID",
+      rsvpForm
+    )
+
+    .then(function(response) {
+
+      console.log("SUCCESS!", response.status, response.text);
+
+      rsvpStatus.textContent =
+        "Thank you! Your RSVP has been received ✨";
+
+      rsvpStatus.className = "success";
+
+      rsvpForm.reset();
+
+      rsvpButton.disabled = false;
+
+      rsvpButton.innerHTML = `
+        <span>RSVP Confirmed ✓</span>
+      `;
+
+    })
+
+    .catch(function(error) {
+
+      console.error("FAILED...", error);
+
+      rsvpStatus.textContent =
+        "Something went wrong. Please try again.";
+
+      rsvpStatus.className = "error";
+
+      rsvpButton.disabled = false;
+
+      rsvpButton.innerHTML = `
+        <span>Confirm RSVP</span>
+        <span class="rsvp-arrow">→</span>
+      `;
+
+    });
+
+  });
+
+
+
+  //name chanje logic
+window.addEventListener('DOMContentLoaded', () => {
+    // URL එකේ තියෙන search parameters ගන්නවා
+    const urlParams = new URLSearchParams(window.location.search);
+    const guestName = urlParams.get('name');
+
+    // 'name' කියන parameter එක URL එකේ තියෙනවා නම් විතරක් h1 එක වෙනස් කරනවා
+    if (guestName) {
+        document.getElementById('guest-name').textContent = guestName;
+    }
 });
 
-// ඔබ HTML එකේ බටන්ස් වලට දීලා තියෙන functions (Error නොවී තිබීම සඳහා හිස්ව හෝ මෙලෙස එක් කරන්න)
-function openInvitation() {
-    // ඔබේ openInvitation කෝඩ් එක මෙතනට දාන්න
-    console.log("Invitation Opened");
-}
-
-function scrollToRSVP() {
-    document.getElementById("rsvp-area").scrollIntoView({ behavior: 'smooth' });
-}
-
-         // 1. EmailJS Initialize
-    (function() {
-        // ඔයාගේ Public Key එක මෙතනට දාන්න
-        emailjs.init("aBeQB5WucIfvgeUb_");
-    })();
 
 
-        function openInvitation() {
-            // Container එකට 'opened' class එක දානවා
-            document.getElementById('invitation-container').classList.add('opened');
-            
-            // Scroll කිරීමට ඉඩ ලබා දෙනවා
-            document.body.style.overflow = 'auto';
+//animation video
+document.addEventListener("DOMContentLoaded", function() {
+    const introContainer = document.getElementById("intro-video-container");
+    const introVideo = document.getElementById("intro-video");
+    const skipBtn = document.getElementById("skip-btn");
 
-            const music = document.getElementById('bgMusic');
-            music.play().catch(e => console.log("Music play blocked by browser"));
-        }
+    function closeIntro() {
+        introContainer.style.opacity = "0";
+        setTimeout(() => {
+            introContainer.style.display = "none";
+        }, 500); // Fade out එකෙන් පසු සම්පූර්ණයෙන්ම අතුරුදහන් කරයි
+    }
 
-        
+    // View Invitation බටන් එක ක්ලික් කළ විට
+    skipBtn.addEventListener("click", function() {
+        closeIntro();
+    });
 
-        // Scroll Animation Logic (Intersection Observer)
-        const animatedImages = document.querySelectorAll('.scroll-animation');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, { threshold: 0.1 });
+    // වීඩියෝ එක අවසන් වූ පසු ස්වයංක්‍රීයව ප්‍රධාන පිටුවට යාමට
+    introVideo.addEventListener("ended", function() {
+        closeIntro();
+    });
+});
 
-        animatedImages.forEach(img => observer.observe(img));
 
-      
 
- 
+//loading funtion
+document.addEventListener("DOMContentLoaded", function() {
+    const loader = document.getElementById("page-loader");
+    const loaderBar = document.getElementById("loader-bar");
+    const loaderPercentage = document.getElementById("loader-percentage");
+
+    let currentProgress = 0;
     
-    </script>
+    // සිමියුලේෂන් සහ රියල් රිසෝස් (Images, Videos, Styles) ලෝඩ් වීම පාලනය කිරීම
+    let isFullyLoaded = false;
 
+    // පර්සන්ටේජ් එක 0 සිට 100 දක්වා සුමටව ගෙනයන වැඩසටහන
+    const progressInterval = setInterval(function() {
+        if (currentProgress < 95 && !isFullyLoaded) {
+            // සම්පූර්ණ පේජ් එක සම්පූර්ණ වනතුරු 95% දක්වා ටිකෙන් ටික ඉස්සරහට යයි
+            currentProgress += Math.floor(Math.random() * 5) + 1;
+            if(currentProgress > 95) currentProgress = 95;
+            
+            loaderBar.style.width = currentProgress + "%";
+            loaderPercentage.innerText = currentProgress + "%";
+        }
+    }, 50);
+
+    // සම්පූර්ණ වෙබ් අඩවියේ පින්තූර, වීඩියෝ සහ අනෙකුත් දත්ත සම්පූර්ණයෙන්ම ඩවුන්ලෝඩ් වී අවසන් වූ පසු
+    window.addEventListener("load", function() {
+        isFullyLoaded = true;
+        clearInterval(progressInterval);
+
+        // 100% ට වේගයෙන් ගෙන ගොස් ස්ක්‍රීන් එක අයින් කරයි
+        currentProgress = 100;
+        loaderBar.style.width = "100%";
+        loaderPercentage.innerText = "100%";
+
+        setTimeout(function() {
+            loader.classList.add("loader-hidden");
+        }, 400); // 100% පිරී තත්පර 0.4 කින් ලෝඩරය වැසී යයි
+    });
+});
+
+     </script>  
 </body>
 </html>
